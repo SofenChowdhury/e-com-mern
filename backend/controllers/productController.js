@@ -1,15 +1,5 @@
 const Product = require("../models/productModel");
 
-//Create product -- Admin
-exports.createProduct = async (req, res, next) => {
-    // res.status(201).json({message: "Route is working fine new!"});
-    const product = await Product.create(req.body);
-    res.status(201).json({
-        success:true,
-        product
-    });
-}
-
 //Get all products
 exports.getAllProducts = async (req, res) => {
     // res.status(200).json({message: "Route is working fine all!"});
@@ -17,6 +7,33 @@ exports.getAllProducts = async (req, res) => {
     res.status(200).json({
         success:true,
         products
+    });
+}
+
+//Get product details
+exports.getProductDetails = async (req, res, next) => {
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+        return res.status(500).json({
+            success:false,
+            message: "Product not found"
+        });
+    }
+
+    res.status(200).json({
+        success:true,
+        product
+    });
+}
+
+//Create product -- Admin
+exports.createProduct = async (req, res, next) => {
+    // res.status(201).json({message: "Route is working fine new!"});
+    const product = await Product.create(req.body);
+    res.status(201).json({
+        success:true,
+        product
     });
 }
 
