@@ -27,7 +27,7 @@ exports.updateProduct = async (req, res, next) => {
         return res.status(500).json({
             success:false,
             message: "Product not found"
-        })
+        });
     }
 
     product = await Product.findByIdAndUpdate(req.params.id, req.body, {
@@ -39,5 +39,24 @@ exports.updateProduct = async (req, res, next) => {
     res.status(200).json({
         success:true,
         product
-    })
+    });
+}
+
+//Delete product --Admin
+exports.deleteProduct = async (req, res, next) => {
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+        return res.status(500).json({
+            success:false,
+            message: "Product not found"
+        });
+    }
+
+    await product.deleteOne({_id: req.params.id});
+
+    res.status(200).json({
+        success:true,
+        message: "Product deleted successfully"
+    });
 }
